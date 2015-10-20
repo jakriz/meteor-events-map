@@ -1,0 +1,13 @@
+<head>
+  <title>payworks payments map</title>
+</head>
+
+<body>
+  {{> map}}
+</body>
+
+<template name="map">
+  <div id="map-container">
+    {{> googleMap name="map" options=mapOptions}}
+  </div>
+</template>
