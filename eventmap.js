@@ -73,17 +73,6 @@ if (Meteor.isServer) {
       }
     });
 
-    // HTTP.get("http://www.telize.com/geoip/"+ipAddress, function(error, response) {
-    //   if (!error) {
-    //     result = JSON.parse(response.content)
-    //
-    //     lastEvent.set({
-    //       latitude: result.latitude,
-    //       longitude: result.longitude
-    //     });
-    //   }
-    // });
-
     this.response.end("ok");
   });
 

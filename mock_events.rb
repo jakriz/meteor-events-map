@@ -12,9 +12,8 @@ while (true) do
     req.url '/events'
     req.headers['Content-Type'] = 'application/json'
     req.body = {ipAddress: ip.to_s}.to_json
-
-    puts "sent event with ip #{ip.to_s}"
-
-    sleep(rand(6))
   end
+
+  puts "sent event with ip #{ip.to_s}"
+  sleep(rand(6)+1)
 end
