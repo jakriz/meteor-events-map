@@ -15,9 +15,11 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 dburles:google-maps
 iron:router
-coffeescript
 http
 jabbslad:basic-auth
 reactive-var
 random
-deanius:promise
+meteorhacks:npm
+
+
+npm-container

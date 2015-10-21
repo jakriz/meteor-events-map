@@ -46,7 +46,12 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
+  var reader;
   var lastEvent = new ReactiveVar();
+
+  Meteor.startup(function() {
+    reader = Meteor.npmRequire('maxmind-db-reader').openSync(process.env.PWD + '/private/GeoLite2-City.mmdb');
+  });
 
   Meteor.publish("events", function() {
     var self = this;
@@ -59,16 +64,25 @@ if (Meteor.isServer) {
   Router.route("/events", {where: "server"}).post(function() {
     ipAddress = this.request.body.ipAddress;
 
-    HTTP.get("http://www.telize.com/geoip/"+ipAddress, function(error, response) {
+    reader.getGeoData(ipAddress, function(error, result) {
       if (!error) {
-        result = JSON.parse(response.content)
-
         lastEvent.set({
-          latitude: result.latitude,
-          longitude: result.longitude
+          latitude: result.location.latitude,
+          longitude: result.location.longitude
         });
       }
     });
+
+    // HTTP.get("http://www.telize.com/geoip/"+ipAddress, function(error, response) {
+    //   if (!error) {
+    //     result = JSON.parse(response.content)
+    //
+    //     lastEvent.set({
+    //       latitude: result.latitude,
+    //       longitude: result.longitude
+    //     });
+    //   }
+    // });
 
     this.response.end("ok");
   });
