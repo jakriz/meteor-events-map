@@ -50,7 +50,7 @@ if (Meteor.isServer) {
   var lastEvent = new ReactiveVar();
 
   Meteor.startup(function() {
-    reader = Meteor.npmRequire('maxmind-db-reader').openSync(process.env.PWD + '/private/GeoLite2-City.mmdb');
+    reader = Meteor.npmRequire('maxmind-db-reader').openSync(process.env.PWD + 'private/GeoLite2-City.mmdb');
   });
 
   Meteor.publish("events", function() {
