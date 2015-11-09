@@ -2,8 +2,6 @@ if (Meteor.isClient) {
   Events = new Meteor.Collection("events");
   Meteor.subscribe("events");
 
-  markers = {};
-
   Meteor.startup(function() {
     GoogleMaps.load();
   });
@@ -46,12 +44,8 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  var reader;
+  var localisator;
   var lastEvent = new ReactiveVar();
-
-  Meteor.startup(function() {
-    reader = Meteor.npmRequire('maxmind-db-reader').openSync(process.env.PWD + '/private/GeoLite2-City.mmdb');
-  });
 
   Meteor.publish("events", function() {
     var self = this;
@@ -64,8 +58,8 @@ if (Meteor.isServer) {
   Router.route("/events", {where: "server"}).post(function() {
     ipAddress = this.request.body.ipAddress;
 
-    reader.getGeoData(ipAddress, function(error, result) {
-      if (!error) {
+    IPGeocoder.geocode(ipAddress, function(error, result) {
+      if (!error && !!result) {
         lastEvent.set({
           latitude: result.location.latitude,
           longitude: result.location.longitude
@@ -76,6 +70,6 @@ if (Meteor.isServer) {
     this.response.end("ok");
   });
 
-  var basicAuth = new HttpBasicAuth("admin", "admin");
+  var basicAuth = new HttpBasicAuth(Meteor.settings.endpoint.username, Meteor.settings.endpoint.password);
   basicAuth.protect(["/events"]);
 }

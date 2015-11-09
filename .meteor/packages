@@ -19,7 +19,5 @@ http
 jabbslad:basic-auth
 reactive-var
 random
-meteorhacks:npm
 
-
-npm-container
+thebakery:ipgeocoder
